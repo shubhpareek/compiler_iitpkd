@@ -6,7 +6,7 @@
 %left	MUL DIV	  /* left assoc., higher precedence */
 %left	PAROPEN PARCLOSE
 %%
-list:	  /* Parser: Productions */
+list:	/* Parser: Productions */
 	| list '\n'
 	| list expr '\n'    { printf("\t%.8g\n", $2); }
 	;
