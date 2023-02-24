@@ -1,0 +1,7 @@
+begindecl
+ int a,b,c;
+enddecl
+a = 2*3+4;
+c = 5;
+b = a + c ;
+print(a,b,c);
