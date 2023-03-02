@@ -1,5 +1,5 @@
 run : lexerr
-	cat testinput3.txt | ./a.out
+	cat testinput.txt | ./a.out
 
 lexerr: lex.yy.c y.tab.c 
 	gcc lex.yy.c y.tab.c 

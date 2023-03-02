@@ -1,7 +1,7 @@
 begindecl
- int a,b,c;
+ int an,b,c;
 enddecl
-a = 2*3+4;
+an = 2*3+4;
 c = 5;
-b = a + c ;
-print(a,b,c);
+b = an + c ;
+print(an,b,c);

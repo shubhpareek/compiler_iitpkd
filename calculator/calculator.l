@@ -1,19 +1,29 @@
 %{
-#define YYSTYPE double
-#include <stdio.h>
+#include <stdlib.h>
+#include "calc3.h"
 #include "y.tab.h"
-//extern YYSTYPE yylval;
-extern int lineno;
+void yyerror(char *);
 %}
 %%
-[0-9]+ { yylval = atoi(yytext); return NUMBER;}
-[\+] { return ADD;}
-[\*] { return MUL;}
-[\-] { return SUB;}
-[\/] { return DIV;}
-[\(] { return PAROPEN;}
-[\)] { return PARCLOSE;}
-[ \t]+ { };
-[\n] {lineno++;return yytext[0];}
+0 {
+yylval.iValue = atoi(yytext);
+return NUMBER;
+}
+
+[1-9][0-9]* {
+yylval.iValue = atoi(yytext);
+return NUMBER;
+}
+[+] { return ADD;}
+[*] { return MUL;}
+[-] { return yytext[0];;}
+[/] { return DIV;}
+[(] { return PAROPEN;}
+[)] { return PARCLOSE;}
+[ \t]+ {;}
+[\n] {return yytext[0];}
 %%
+int yywrap(void) {
+return 1;
+}
 
