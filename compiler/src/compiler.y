@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include<string.h>
 #include <stdarg.h>
-#include "calc3.h"
+#include "../include/calc3.h"
 /* prototypes */
 nodeType *opr(int oper, int nops, ...);
 nodeType *con(int value);

@@ -1,5 +1,0 @@
-begindecl
-int a,b;
-enddecl
-a = b;
-print(a);

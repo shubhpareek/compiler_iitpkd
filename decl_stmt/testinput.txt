@@ -1,7 +1,0 @@
-begindecl
- int an,b,c;
-enddecl
-an = 2*3+4;
-c = 5;
-b = an + c ;
-print(an,b,c);

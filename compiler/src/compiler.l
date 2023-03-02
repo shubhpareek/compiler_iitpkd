@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include<string.h>
-#include "calc3.h"
-#include "y.tab.h"
+#include "../include/calc3.h"
+#include "../build/y.tab.h"
 void yyerror(char *);
 %}
 %%
