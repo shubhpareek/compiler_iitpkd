@@ -30,6 +30,8 @@ union{
 }
 ;
 
+
+
 struct gdeclist{
     struct gltype * val;
     struct gdeclist *npt;
@@ -418,4 +420,151 @@ void add(char * name)
         puts("error : variable already declared ");
         exit(0);
     }
+}
+/////////////////////////////////
+
+void displayinorder(struct tree *root)
+{
+	if (root!=NULL)
+	{
+		displayinorder(root->left);
+		if (root->nval !=-1)
+			printf("%d ",root->nval);
+		else if (root->nop !='\0')
+			printf("%c ",root->nop);
+		else if(!strcmp(root->type,"dummy"))
+			printf("dummy ");
+		else if(!strcmp(root->type,"if"))
+			{printf("if ");displayinorder(root->middle);}
+		else if(!strcmp(root->type,"=="))
+			printf("== ");
+		else if(!strcmp(root->type,"<="))
+			printf("<= ");
+		else if(!strcmp(root->type,">="))
+			printf(">= ");
+		else if(!strcmp(root->type,"<"))
+			printf("< ");
+		else if(!strcmp(root->type,">"))
+			printf("> ");
+		else if(!strcmp(root->type,"variable"))
+			printf("%c",root->name);
+		else if(!strcmp(root->type,"read"))
+			printf("read ");
+		else if(!strcmp(root->type,"write"))
+			printf("write ");
+		else if(!strcmp(root->type,"while"))
+			{printf("while ");}	
+		displayinorder(root->right);
+	}
+}
+int evaluation(struct tree *root)
+{
+	
+	if(root->nop=='=')
+	{
+		char k=(root->left)->name;
+		sym[k-'a']=evaluation(root->right);
+		//printf("%c=",k);
+		return sym[k-'a'];
+	}
+	else if(root->name!='\0')
+	{
+	  	return sym[root->name - 'a'];	
+	}	
+	else
+	{
+	if(root->nval!=-1)
+		return root->nval;
+	else if(root->nop=='+')
+		return ( evaluation(root->left) + evaluation(root->right) );
+	else if (root->nop=='*')
+		return ( evaluation(root->left) * evaluation(root->right) );
+	else if(strcmp(root->type,"==")==0)
+		return ( evaluation(root->left) == evaluation(root->right) );
+	else if(strcmp(root->type,">=")==0)
+		return ( evaluation(root->left) >= evaluation(root->right) );
+	else if(strcmp(root->type,"<=")==0)
+		return ( evaluation(root->left) <= evaluation(root->right) );
+	else if(strcmp(root->type,">")==0)
+		return ( evaluation(root->left) > evaluation(root->right) );
+	else if(strcmp(root->type,"<")==0)
+		return ( evaluation(root->left) < evaluation(root->right) );
+	}
+
+}
+int is_left(struct tree* node)
+{
+	if (node->left!=NULL)
+		return 1;
+	else
+		return 0;
+}
+int is_right(struct tree* node)
+{
+	if (node->right!=NULL)
+		return 1;
+	else
+		return 0;
+}
+int is_dummy(struct tree* node)
+{
+	if(strcmp(node->type,"dummy")==0)
+		return 1;
+	else
+		return 0;
+}
+struct tree* dummyalloc()
+{
+	struct tree *hi=(struct tree*) malloc(sizeof(struct tree));
+	strcpy(hi->type,"dummy");
+	hi->name='\0';
+	hi->nval=-1;
+	hi->nop='\0';
+	hi->left=NULL;
+	hi->right=NULL;
+	hi->middle=NULL;
+	return hi;
+}
+void neweval(struct tree *node)
+{
+	if(node!=NULL)
+	{
+	if(is_dummy(node))
+	{
+		neweval(node->left);
+		neweval(node->right);
+	}
+	
+	else if(node->nop=='=')
+	{
+		int k=evaluation(node);//printf("%d\n",evaluation(node));
+	}
+	else if(strcmp(node->type,"read")==0)
+	{
+	   printf("Enter value of %c",node->name);
+	   scanf("%d",&sym[node->name-'a']);
+	 }
+	else if(strcmp(node->type,"write")==0)
+	{
+		printf("%d\n",evaluation(node->left));
+	}
+	else if(strcmp(node->type,"if")==0)
+	{
+		int k=evaluation(node->left);
+		if(k!=0)
+			 neweval(node->middle);
+		else if(node->right != NULL)
+			 neweval(node->right);
+	}
+	else if(strcmp(node->type,"while")==0)
+	{
+		int k=evaluation(node->left);
+		while(k)
+		{
+		neweval(node->right);
+		k=evaluation(node->left);
+		}
+		
+	}
+	}
 }
